@@ -1,1 +1,6 @@
 libregreek.oxt
+
+# ignore the locked files created by LibreOffice
+# example: .~lock.Clean Earth Flyer.ott#
+
+*#
