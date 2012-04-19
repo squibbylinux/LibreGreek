@@ -6,7 +6,7 @@
 
 		<node oor:name="Template" oor:op="fuse">
 			<node oor:name="InternalPaths">
-				<node oor:name="%origin%/templates" oor:op="fuse"/>
+				<node oor:name="%origin%/templates/el-GR" oor:op="fuse"/>
 			</node>
 		</node>
 
