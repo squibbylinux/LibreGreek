@@ -5,3 +5,5 @@ libregreek.oxt:
 
 clean:
 	@rm -f libregreek.oxt
+
+.PHONY: clean
