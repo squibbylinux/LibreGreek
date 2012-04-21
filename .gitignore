@@ -4,3 +4,6 @@ libregreek.oxt
 # example: .~lock.Clean Earth Flyer.ott#
 
 *#
+*.wl
+*.lnum
+elen.dic
