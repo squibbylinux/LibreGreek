@@ -33,7 +33,9 @@ Build
 =====
 
 cd autocorrect ; make ; make install
+
 cd ../makedict ; make ; make install
+
 cd ..;           make 
 
 and use the resulting libregreek.oxt extension
