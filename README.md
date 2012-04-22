@@ -29,4 +29,11 @@ the packaging is done by us, Squibby Linux Team and we take full
 responsibility for it, so please forward any issues / complaints
 to us (public at chania-lug.gr).
 
---pkt
+Build
+=====
+
+cd autocorrect ; make ; make install
+cd ../makedict ; make ; make install
+cd ..;           make 
+
+and use the resulting libregreek.oxt extension
