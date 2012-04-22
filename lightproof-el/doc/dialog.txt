@@ -1,0 +1,52 @@
+# 1. Copy this template to the data folder, under the name of your locale
+#    eg. en_US.dlg.
+#
+# 2. Define your group ids and option ids and the localized title 
+#    texts (see later for the syntax).
+#
+# Syntax of the dialog data file:
+# 
+# Options and title texts for the Settings and conditional rules
+#
+# The Lightproof dialogs contain only grouped checkboxes.
+#
+# Format of the dialog definition:
+#
+# GroupID: OptionID [OptionsInTheSameLines_or_hyphen_placeholder], OptionID ...
+# Group2ID: OptionID, OptionID ...
+# ...
+# [Language_code=title of the window]
+# GroupID=title of the group
+# OptionID=title of the option [\n tooltip]
+# Option2ID=title of the option [\n tooltip]
+#
+# The first language is the default language for the other locales
+# (use en_US or the common language of your country)
+#
+# The OptionIDs are used in the rules, too. For example:
+#
+# foo <- option("style") -> bar # bar is far better
+#
+# this rule depends from the state of the "style" checkbox.
+
+# options
+
+spelling: comma, hyphen
+proofreading: style, moregrammar
+
+# titles
+
+[en_US=Hungarian grammar checking]
+
+spelling=Spelling
+comma=Comma usage
+hyphen=Check compound words with hyphen
+proofreading=Proofreading
+style=Style checking
+moregrammar=Use grammar rules with ambiguous word analysis
+
+[yourlocale=yourtitle]
+
+spelling=...
+wordpart=...
+...

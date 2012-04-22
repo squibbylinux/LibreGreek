@@ -1,0 +1,69 @@
+= Making a new grammar checker for LibreOffice/OpenOffice.org =
+
+== Rule development ==
+
+Use Lightproof editor (LibreOffice Writer toolbar extension) to create a rule
+(Lightproof .dat) file. See doc/syntax.txt for more informations.
+
+After LibreOffice integration (see later) switch off the integrated grammar
+checker component in the Tools » Options » Language Settings » Writing Aids »
+Available language modules, eg. "Lightproof Grammar Checker (en)", and switch
+on the component "Lightproof editor" and *restart* LibreOffice for rule
+development.
+
+There is no visual editor for optional features, yet (dlg file), but you can
+compile and test all optional rules in the editor with the Apply all rules icon.
+Also copying your rule and dialog definition files to the src/editor folder,
+you can compile an extended editor extension with the
+following command: python make.py src/editor/editor.cfg
+
+Note: the default locales of the editor (supported languages of the edited rule
+document) cover only the languages with Hunspell dictionaries. Choose such
+languages for editing in Writer (eg. Esperanto), or add your language to the
+"locales" section of the src/editor/editor.cfg and compile the editor extension.
+
+== Extension development ==
+
+1. Copy src/en/en.cfg, dat and dlg files under the name src/your_locale/your_locale.cfg, dat and dlg.
+
+2. Set cfg, translate messages, dat and dlg files (see doc/dialog.txt).
+
+3. Compile and install your data (see README)
+
+== LibreOffice integration ==
+
+Short description about the Lightproof integration with the dictionary
+extensions (it is not an automatic process yet):
+
+1. Copy dialog/* and pythonpath/* directories and Lightproof.py, Linguistic.xcu
+of your Lightproof extension to the dictionaries/your_language/ directory of
+LibreOffice. (Note: pythonpath/lightproof_compiler* doesn't need for the
+integration.)
+
+2. Extend COMPONENT_FILES variable of makefile.mk with these new files.
+
+3. Extend manifest.xml with the following elements:
+
+    <manifest:file-entry manifest:full-path="dialog/OptionsDialog.xcs"
+               
+manifest:media-type="application/vnd.sun.star.configuration-schema" />
+        <manifest:file-entry manifest:full-path="dialog/OptionsDialog.xcu"
+               
+manifest:media-type="application/vnd.sun.star.configuration-data" />
+        <manifest:file-entry
+manifest:media-type="application/vnd.sun.star.uno-component;type=Python"
+                manifest:full-path="Lightproof.py"/>
+        <manifest:file-entry
+               
+manifest:media-type="application/vnd.sun.star.configuration-data"
+                manifest:full-path="Linguistic.xcu" />
+
+4. Change extension ID of dialog/OptionsDialog.xcu to the ID of the dictionary
+extension (see in description.xml):
+
+<prop oor:name="Id">
+    <value>org.openoffice.en.hunspell.dictionaries</value>
+</prop>
+
+
+

@@ -1,0 +1,41 @@
+# Options and title texts for the Settings and conditional rules
+#
+# THe dialog windows contain only grouped checkboxes.
+#
+# Format of the dialog definition:
+#
+# GroupID: OptionID, OptionID ...
+# Group2ID: OptionID, OptionID ...
+# ...
+# [Language_code=[title of the node/]title of the window]
+# OptionID=title of the option
+# Option2ID=title of the option
+#
+# The first language is the default language for other locales
+# (use en_US or the common language of your country)
+#
+# The OptionIDs declared here are used in the rules, too. For example:
+#
+# foo <- option("style") -> bar # bar is far better
+#
+# this rule depends from the state of the "style" checkbox.
+
+# options (starred options are checked)
+
+spelling: dup pair *quotation
+
+# titles
+
+[en_US=Greek sentence checking]
+
+spelling=Sentence checking
+dup=Word duplication\nCheck repeated words.
+pair=Parentheses\nCheck missing or extra parentheses and quotation marks.
+quotation=Quotes\nCheck for double/english quotes: "χ" → «χ»
+
+[el_GR=Έλεγχος προτάσεων ελληνικής γλώσσας]
+
+spelling=Έλεγχος προτάσεων
+dup=Διπλές λέξεις\nΈλεγχος για επαναλαμβανόμενες λέξεις
+pair=Παρενθέσεις\nΈλεγχος για λιγότερες ή πλεονάζουσες παρενθέσεις και εισαγωγικά
+quotation=Εισαγωγικά\nΈλεγχος για διπλά αγγλικά εισαγωγικά: "χ" → «χ»

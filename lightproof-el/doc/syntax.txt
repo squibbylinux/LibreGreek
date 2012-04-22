@@ -1,0 +1,334 @@
+= Encoding =
+
+UTF-8
+
+= Rule syntax =
+
+pattern -> replacement # message
+
+or (see Conditions)
+
+pattern <- condition -> replacement # message
+
+or
+
+pattern <- condition -> = replacement # = expression_for_message
+pattern <- condition -> = expression_to_generate_replacement_string # message
+pattern <- condition -> = expression_to_generate_replacement_string # = expression_for_message
+
+
+Basically pattern and replacement will be the parameters of the
+standard Python re.sub() regular expression function (see also
+Python regex module documentation for regular expression syntax:
+http://docs.python.org/library/re.html).
+
+Example 0. Report "foo" in the text and suggest "bar":
+
+foo -> bar # Use bar instead of foo.
+
+Example 1. Recognize and suggest missing hyphen:
+
+foo bar -> foo-bar # Missing hyphen.
+
+= Rule Sections =
+
+Example 2. Recognize double or more spaces and suggests a single space:
+
+[char]
+
+"  +" -> " " # Extra space.
+
+The line [char] changes the default word-level rules to character-level ones.
+Use [Word] to change back to the (case-insensitive) word-level rules.
+Also [word] is for the case-sensitive word-level rules, and [Char] for the
+case-insensitive character-level rules.
+
+ASCII " characters protect spaces in the pattern and in the replacement text.
+Plus sign means 1 or more repetitions of the previous space.
+
+= Other examples =
+
+Example 3. Suggest a word with correct quotation marks:
+
+\"(\w+)\" -> “\1” # Correct quotation marks.
+
+(Here \" is an ASCII quotation mark, \w means an arbitrary letter,
++ means 1 or more repetitions of the previous object,
+The parentheses define a regex group (the word). In the
+replacement, \1 is a reference to the (first) group of the pattern.)
+
+Example 4. Suggest the missing space after the !, ? or . signs:
+
+\b([?!.])([a-zA-Z]+) -> \1 \2 # Missing space?
+
+\b is the zero-length word boundary regex notation, so
+\b signs the end and the begin of the words.
+
+The [ and ] define a character pattern, the replacement will contain
+the actual matching character (?, ! or .), a space and the word after
+the punctuation character.
+Note: ? and . characters have special meanings in regular expressions,
+use [?] or [.] patterns to check "?" and "." signs in the text.
+
+== Multiple suggestions ==
+
+Use \n (new line) in the replacement text to add multiple suggestions:
+
+foo -> Foo\nFOO\nBar\nBAR # Did you mean:
+
+(Foo, FOO, Bar and BAR suggestions for the input word "foo")
+
+= Expressions in the suggestions =
+
+Suggestions (and warning messages) started by an equal sign are Python string expressions
+extended with possible back references and named definitions:
+
+Example:
+
+foo\w+ -> = '"' + \0.upper() + '"' # With uppercase letters and quoation marks
+
+All words beginning with "foo" will be recognized, and the suggestion is
+the uppercase form of the string with ASCII quoation marks: eg. foom -> "FOOM".
+
+== No suggestion ==
+
+You can display message without making suggestions. For this purpose, use a single character _ in the replacement field.
+
+Example:
+
+foobar -> _ # Message
+
+== Longer explanations ==
+
+Warning messages can contain optional URLs for longer explanations separated by "\n":
+
+(your|her|our|their)['’]s -> \1s # Possessive pronoun: \n http://en.wikipedia.org/wiki/Possessive_pronoun
+
+== Back references in explanations ==
+
+(fooo) bar -> foo bar # “\1” should be:
+
+== Default variables ==
+
+LOCALE
+
+It contains the current locale of the checked paragraph. Its fields:
+For en-US LOCALE.Language = "en" and LOCALE.Country = "US", eg.
+
+colour <- LOCALE.Language == "US" -> color # Use American English spelling.
+
+TEXT
+
+Full text of the checked paragraph.
+
+== Name definitions ==
+
+Lightproof supports name definitions to simplify the
+description of the complex rules.
+
+Definition:
+
+name pattern # name definition
+
+Usage in the rules:
+
+"{name} " -> "{name}. " # Missing dot?
+
+{Name}s in the first part of the rules mean
+subpatterns (groups). {Name}s in the second
+part of the rules mean back references to the
+matched texts of the subpatterns.
+
+Example: thousand markers (10000 -> 10,000 or 10 000)
+
+# definitions
+d \d\d\d	# name definition: 3 digits
+d2 \d\d		# 2 digits
+D \d{1,3}	# 1, 2 or 3 digits
+
+# rules
+# ISO thousand marker: space, here: no-break space (U+00A0)
+{d2}{d} -> {d2},{d}\n{d2} {d}           # Use thousand marker (common or ISO).
+{D}{d}{d} -> {D},{d},{d}\n{D} {d} {d}   # Use thousand markers (common or ISO).
+
+Note: Lightproof uses named groups for name definitions and
+their references, adding a hidden number to the group names
+in the form of "_n". You can use these explicit names in the replacement:
+
+{d2}{d} -> {d2_1},{d_1}\n{d2_1} {d_1}	# Use thousand marker (common or ISO).
+{D}{d}{d} -> {D_1},{d_1},{d_2}\n{D_1} {d_1} {d_2} # Use thousand markers (common or ISO).
+
+Note: back references of name definitions are zeroed after new line
+characters, see this and the following example:
+
+E ( |$)                       # name definition: space or end of sentence
+"\b[.][.]{E}" -> .{E}\n…{E}   # Period or ellipsis?
+
+See src/en/en.dat for more examples.
+
+= Error positioning =
+
+By default, the full pattern will be underlined with blue.
+You can shorten the underlined text area by specifying a back reference group of the pattern.
+Instead of writing ->, write -n>  n being the number of a back reference group.
+Actually,  ->  is similar to  -0>
+
+Example
+(ying) and yang -1> yin # Did you mean:
+
+== Comparison ==
+
+Rule 1:
+ying and yang -> yin and yang # Did you mean:
+
+Rule 2:
+(ying) and yang -1> yin # Did you mean:
+
+With the rule 1, the full pattern is underlined:
+    ying and yang
+    ^^^^^^^^^^^^^
+
+With the rule 2, only the first back reference group is underlined:
+    ying and yang
+    ^^^^
+
+= Conditions =
+
+A Lightproof condition is a Python condition with some modifications:
+the \0..\9 regex notations and the Lightproof {name} notations in the condition will be
+replaced by the matched subpatterns. For example, the rule
+
+\w+ <- \0 == "foo" -> Foo # Foo is a capitalized word.
+
+is equivalent of the following rule:
+
+foo -> Foo # Foo is a capitalized word.
+
+== Standard functions ==
+
+There are some default function for the rule conditions.
+
+
+word(n) or word(-n):
+
+The function word(n) returns the Nth word (separated only by white spaces)
+before or after the matching pattern, or None, if this word doesn't exist.
+
+
+morph(word, regex pattern):
+morph(word, regex pattern, all):
+
+The function morph returns a matching subpattern of the morphological analysis
+of the input word or None, if the pattern won't match all items of the
+analysis of the input word. For example, the rule
+
+\ban ([a-z]\w+) <- morph(\1, "(po:verb|is:plural)") -> and \1 # Missing letter?
+
+will find the word "an" followed by a not capitalized verb or a plural noun (the notation depends from the morphological data of
+the Hunspell dictionary).
+
+The optional argument can modify the default "all" mode to "if exists", using
+the False value:
+
+morph(word, regex pattern, False):
+
+stem(word):
+
+The function returns an arraw with the stems of the input word.
+
+Usage:
+
+(\w+) <- "foo" in stem(\1) -> bar # One of the stem of the word is "foo"
+
+(\w+) <- stem(\1) == ["foo"] -> bar # The word has got only one stem, "foo".
+
+
+
+affix(word, regex pattern):
+affix(word, regex pattern, all):
+
+Variant of morph: it filters the affix fields from the result of the analysis
+before matching the pattern.
+
+The optional argument can modify the default "all" mode to "if exists", using
+the False value:
+
+affix(word, regex pattern, False):
+
+
+calc(functionname, functionparameters):
+
+Access to the Calc functions. Functionparameters is a tuple with the parameter
+of the Calc function:
+
+calc("CONCATENATE", ("string1", "string2"))
+
+
+generate(word, example_word):
+
+Morphological generation by example, eg. the result of generate("mouse",
+"rodents") is ["mice"] with the en_US English dictionary. (See also
+Hunspell (4) manual page for morphological generation.)
+
+option(optionname):
+
+Return the Boolean value of the option (see doc/dialog.txt).
+
+== Multi-line rules ==
+
+Rules can be break to multiple lines by leading tabulators:
+
+pattern <- condition
+	# only comment
+	-> replacement
+	# message (last comment)
+
+== User code support ==
+
+Use [code] sections to add your own Python functions for the rules:
+
+Example (suggesting uppercase form for all words with underline character,
+for example hello_world -> HELLO_WORLD)
+
+[code]
+
+def u(s):
+    return s.upper()
+
+[Word]
+
+# suggest uppercase form for all words with underline character
+
+\w+_\w+ -> =u(\0) # Use uppercase form
+
+(In fact, this is equivalent of the following rule:
+
+\w+_\w+ -> =\0.upper() # Use uppercase form)
+
+See English rules (src/en/en.dat) for more examples, eg. precompiled regular
+expressions for sentence checking, sets to handle more irregular words etc.
+
+= Typical problems =
+
+== Encoding ==
+
+Python expressions (< Python 3.0) need explicit Unicode declaration for non-ASCII
+characters:
+
+fó -> bár # example
+
+is equivalent of the following rule (see u'string' instead of 'string')
+
+fó -> = u'bár' # example
+
+== Pattern matching ==
+
+Repeating pattern matching of a single rule continues after the previous matching, so
+instead of general multiword patterns, like
+
+(\w+) (\w+) <- some_check(\1, \2) -> \1, \2 # foo
+
+use
+
+(\w+) <- some_check(\1, word(1)) -> \1, # foo
+

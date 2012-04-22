@@ -1,0 +1,68 @@
+Lightproof grammar checker framework for Libreoffice/OpenOffice.org
+
+source: git://anongit.freedesktop.org/libreoffice/lightproof
+
+or see cgit.freedesktop.org/libreoffice
+
+version 1.5 beta 2 (2012-02-02)
+
+2009–2012 (c) László Németh (nemeth at numbertext dot org), license: MPL 1.1 / GPLv3+ / LGPLv3+
+
+This software was developed with support from FSF.hu Foundation, Hungary.
+(For more information, see http://www.fsf.hu/index.php/About_us.)
+
+== Build OOo/LibO extension ==
+
+python make.py [config_file]
+
+For example:
+
+python make.py src/en/en.cfg
+
+or with own Python of LibreOffice on Windows:
+
+[install_path]\program\python make.py src\en\en.cfg
+
+The result is an oxt (OpenOffice.org/LibreOffice) extension.
+
+== Compile development tool ==
+
+python make.py src/editor/editor.cfg
+
+== Installation ==
+
+1. Via Tools -> Extension manager in OOo/LibreOffice
+
+2. or with unopkg tool, for example
+
+[install_path\program\]unopkg add -f lightproof_en-0.4.2.oxt
+
+== Features ==
+
+- Lightproof is a grammar checker extension generator (see doc/manual.txt):
+  the result of the generation is a single Lightproof or vendor specific
+  grammar checker language package, eg. lightproof-en.oxt or
+  your-grammar-checker-en_US.oxt.
+
+- language-neutral proofreading tool (see data/ for language data)
+- OpenOffice.org grammar checker extension generator
+- Lightproof editor (rule development tool / LibreOffice toolbar)
+- high-level regex-based rule definition language
+- optional Python conditions in the rules
+- integration with Hunspell morphological analyzer
+- written in Python using fast regex module of CPython
+- lazy loading of language modules
+- template (data/template.dat) for new languages
+
+== Rule compilation ==
+
+For the default language modules (en_US, hu_HU, ru_RU):
+
+make
+
+See doc/manual.txt to add a new language module or develop a
+new grammar checker extension for your language
+
+== Documentation ==
+
+doc/manual.txt

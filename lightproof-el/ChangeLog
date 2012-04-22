@@ -1,0 +1,172 @@
+2012-02-15  Olivier Ronez <dicollecte.org>:
+        - new: error positioning, underline a back reference group instead of the full pattern
+
+2012-02-12  Olivier Ronez <dicollecte.org>:
+        - back references in explanations, eg. # \1 should be...
+        - display message without suggestion, eg.  foo -> _ # Message
+        - function word() returns '' instead of None
+        - add .gitignore
+
+2012-02-04  László Németh <nemeth@numbertext.org>:
+        - fix multiple suggestions, the problem reported by Yakov Reztsov 
+
+2012-02-02  László Németh <nemeth@numbertext.org>:
+        - Lightproof editor (rule development extension for LibreOffice)
+        - use template and config system, based on
+          the work of Olivier Ronez, author of French
+          grammar checker Grammalecte.
+        - code cleanups
+        - move user code to different module to speed up
+          its load (submodules use Python pyc format)
+
+2011-12-16  László Németh <nemeth@numbertext.org>:
+        - add FullCommentURL support
+        - remove " [" from reversed space and punctuation
+        - remove traceback.print_exc (problems on Windows reported by Olivier Ronez)
+        - license: LGPL -> MPL/GPL/LGPL
+        - remove tabulators for LibreOffice Git
+        - options only in extension manager (temporarily)
+        - help separator in dlg: now "\n" instead of "/"
+        - long comments (\n), eg. # Did you mean:\nExplanation...
+        - expressions in comments, eg. # =expression({word})
+        - \u00AD (soft hyphen is not word boundary)
+        - print traceback in LibreOffice
+        - LOCALE, TEXT in rules, see doc.
+
+        * lightproof_py.py: fix hasLocale() for LibreOffice 3.5
+
+        - data/en_US.dat: improved English rules (a/an) rules
+
+        * Complile.py: support "_" in pattern names.
+        - add ^ for sentence beginning 
+
+2011-07-12  László Németh <nemeth@numbertext.org>:
+        * lightproof_handler_py.py: fix for LibreOffice
+          Problem with option settings reported by Péter Benedek on
+          openscope.org and others
+
+        * Dialog.py: support for multiple options in a line.
+          syntax in dlg files: space and comma separated list, comma means new line:
+          item1 item2 ..., itemx itemz ..., itemA itemB ...
+
+        * Dialog.py: tooltip support, syntax in dlg files: slash separation
+          item = option caption/tooltip
+
+        * Dialog.py: fix localization of the extension name in the Options
+
+        * lightproof_py.py:
+        - stem(): new function for stemming, see doc/syntax.txt.
+          Problems with the experimental version reported by Olivier Ronez.
+        - generate(): new function for morphological generation, see doc/syntax.txt
+        - extended functions: optional "all" parameter of functions morph() and affix(),
+          see doc/syntax.txt
+
+        * Compile.py: fix for [code] (handling "\n" in strings)
+
+2010-02-19  László Németh <nemeth@numbertext.org>:
+	* Compile.py, make.py: add user code support 
+	  by [code] sections in the rule files,
+	  see end of the doc/manual.txt
+
+	* Lightproof_handler.py: fix Mac OS X PyUNO problem
+	  (problem with helper classes in the same file)
+
+2009-12-16  László Németh <nemeth@numbertext.org>:
+	* make.py: vendor/language specific grammar checker generator
+	* *_{py,xcu,xml}.py:
+	- template files for code generation
+	* Makefile, Compile.py:
+	- modified for code generation
+
+	* Dialog.py:
+	- Options dialog data generator (see doc/dialog.txt)
+
+	* data/{en_US,hu_HU}.dat:
+	- optional rules: word duplication etc.
+
+	* Lightproof.py:
+	- fix getAlternatives() handling (morphological analysis of unknown
+	  words resulted in unchecked sentences)
+	
+	- extended, simplified syntax:
+	
+	  rule sections ([Word], [word], [Char], [char]): see NEWS
+
+	- expressions in suggestions: specified by a starting equal sign
+	  (see doc/syntax.txt):
+
+	- new library functions (see doc/syntax.txt):
+	    option(): return the value of the option (see doc/dialog.txt)
+	    spell(): spelling (Boolean function)
+	    suggest(): suggestion
+	    affix(): morph variant (only with affix fields)
+	    calc(): Calc function access
+
+2009-10-23  László Németh <nemeth@numbertext.org>:
+	* data/hu_HU.dat:
+	- fix rule article "a". The problem with "13-a óta" reported by kiazaki
+	  at openscope.hu.
+
+2009-10-20  László Németh <nemeth@numbertext.org>:
+	* data/hu_HU.dat:
+	- add the rule "mellet" for irregular nouns, too (eg. "a ház mellet")
+
+	- add -ban/-ben affixes to the rule "helyett kap", reported by
+	  József Barna.
+
+	- fix digit separator rules for decimal digits, reported by joghurt at
+	  OOo Wiki.
+
+	* Lightproof.py:
+	- add words with dots to word(). The problem with version numbers
+	  (eg. in OpenOffice.org 3.1) reported by Kami.
+
+2009-10-19  László Németh <nemeth@numbertext.org>:
+	* Lightproof.py:
+	- Hunspell integration
+	
+	- processing conditional rules by eval()
+	
+	- helper functions: morph() and word() (see doc/syntax.txt)
+
+	- add try-except for proofing rule compiling (bad regexes of the
+	  conditional rules detected only in loading phase yet, see stdout
+	  of OpenOffice.org)
+	
+	* Compile.py:
+	
+	- conditional rules (see doc/syntax.txt and hu_HU.dat)
+
+	- multi-line rules
+
+	* data/hu_HU.dat:
+	- new Hungarian rules
+
+2009-09-03  László Németh <nemeth@numbertext.org>:
+	* Lightproof.py:
+
+	- fix: multiple space detection beetween sentences
+	- data/*.dat: modified rule for space detection beetween sentences
+
+	* data/en*.dat:
+	
+	- fix: de *juro -> de jure, also extended by "de luxe"
+	
+	- using "typographic apostrophe" message instead of "apostrophe".
+	  Ambiguous warning message reported by Dave Pitts (davidmpitts at gmail)
+
+	* data/hu_HU.dat:
+	- add "döntetlenre" to the suggestions for "egyelőre"
+
+	* doc/manual.txt: reported by Olivier Ronez <dico dot savant at free dot fr>
+	
+	- replace Convert.py with Compile.py
+
+	- suggesting yourname.dat argument instead of parameter substitution
+	  for manual compilation under Windows 
+
+2009-09-01  Yakov Reztsov <yr at myooo dot ru>
+	* data/ru_RU.dat: Russian translation of template.dat
+
+2009-04-25  László Németh <nemeth@numbertext.org>:
+        * first release

@@ -1,0 +1,89 @@
+2012-02-04: Version 1.5 beta 3
+- bug fix in suggestion formatting
+
+2012-02-02: Version 1.5 beta 2
+- rule editor (Writer extension)
+- code cleanups, only Python dependency in config system
+
+2011-12-05: Version 1.5 beta (1.4.3)
+- Improved English and Hungarian rules
+- See ChangeLog
+
+2011-07-12: Version 1.4.1
+- fix option saving in LibreOffice
+
+- fix localization of the name of the grammar checker in OpenOffice.org/LibreOffice Options
+
+- multiple options in the same line in the Options dialog
+
+- new functions: stem(), generate()
+
+- improved Hungarian rules
+
+2010-02-19 Version 1.4
+- user code support ([code] sections in the rule files)
+
+- fix Mac OS X PyUNO problem
+
+2009-12-16 Version 1.3
+- Lightproof is a grammar checker extension generator (see doc/manual.txt):
+  the result of the generation is a single Lightproof or vendor specific
+  grammar checker language package, eg. lightproof-en_US.oxt or
+  your-grammar-checker-en_US.oxt.
+
+- native OpenOffice.org Options support (see Options->Language Settings
+      after the installation of en_US or hu_HU oxt packages of the Lightproof
+      distribution). Documentation: doc/dialog.txt
+
+- new, simplified rule syntax:
+    - rule sections ([Word], [word], [Char], [char]):
+        - word rules: patterns with default word boundaries
+            - [Word]: ignore case
+            - [word]: case sensitive
+
+        simplified syntax:
+
+        [Word] (default)
+
+        foo -> bar # bar is far better
+
+        instead of the old
+        
+        (?i)\bfoo\b -> bar # bar is far better
+
+        - character rules: old default
+            - [Char]: ignore case
+            - [case]: case sensitive
+
+    - expressions in suggestions: specified by a starting equal sign
+    
+        foo\w+ -> =\0.upper() # suggest with uppercase letters
+
+    - new library functions:
+      spell: spelling (Boolean function)
+      suggest: suggestion
+      affix: morph variant (only with affix fields)
+      calc: Calc function access (see NUMBERTEXT example in data/hu_HU.dat)
+
+2009-10-23 Version 1.2.2
+    - a small improvement in Hungarian grammar checking
+
+2009-10-20 Version 1.2.1
+    - small improvements in Hungarian grammar checking
+
+2009-10-19 Version 1.2
+    - Hunspell integration and
+
+    - extended syntax for grammar checking based on
+      morphological analysis (see data/hu_HU.dat)
+      
+    - multi-line rules
+    
+    - extended Hungarian rules
+
+2009-09-03 Version 1.1
+    - fixed multiple space detection beetween sentences
+
+    - Translated and extended Russian rule sets from Yakov Reztsov 
+    
+    - small improvements (see ChangeLog)
