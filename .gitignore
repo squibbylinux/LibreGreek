@@ -4,7 +4,9 @@ libregreek.oxt
 # example: .~lock.Clean Earth Flyer.ott#
 
 *#
-*.wl
+greekcaps.wl
+gcaps.wl
+elen.wl
 *.lnum
 elen.dic
 acor_el-GR.dat
