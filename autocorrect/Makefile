@@ -4,6 +4,7 @@ acor-el_GR.dat:
 	@cd acor-el ; zip -r -q ../acor_el-GR.dat .
 
 install:
+	@mkdir -p ../libregreek/autocorr
 	@mv acor_el-GR.dat ../libregreek/autocorr/
 
 clean:
