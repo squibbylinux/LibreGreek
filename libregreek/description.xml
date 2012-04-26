@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <description xmlns="http://openoffice.org/extensions/description/2006" 
 	     xmlns:xlink="http://www.w3.org/1999/xlink">
   
   <identifier value="gr.squibbylinux.libregreek" />
   <version value="1.0" />
+  <platform value="all" />
+  
   <display-name>
     <name lang="en-US">Support for Greek Language</name>
+    <name lang="el-GR">Υποστήριξη για την ελληνική γλώσσα</name>
   </display-name>
+    
   <registration>
-    <simple-license  accept-by="admin" default-license-id="default">
+	    <!-- 
+	    Don't change the values for 'accept-by' or 'suppress-on-update'.
+	    It might be troublesome in multi-user installations if no
+	    shared-layer installation can be done.
+        -->
+    <simple-license  accept-by="admin" default-license-id="default" suppress-on-update="true">
       <license-text xlink:href="LICENSE" lang="en-US" license-id="default"/>
+      <!-- TODO: add localized licence 
+      <license-text xlink:href="LICENSE-el" lang="el" />
+      -->
     </simple-license>
   </registration>
+  
 </description>
