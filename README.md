@@ -12,7 +12,7 @@ I 'm starting with:
         extension of Kostas Papadimas (updated with latest wordlist
         from elspell project)
 
-      * Thesaurus from OpenThesaurus.gr (now defunkt) from 2006
+      * Thesaurus from the new OpenThesaurus.gr 
 
       * Hyphenation rules for Greek by InterZone
 
